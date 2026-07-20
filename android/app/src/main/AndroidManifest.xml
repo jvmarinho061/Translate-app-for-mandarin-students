@@ -1,8 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Necessária para tradução e áudio. Sem ela o app compila e roda, mas
+         toda chamada de rede falha em release (o manifest de debug a injeta,
+         mascarando o problema durante o desenvolvimento). -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:label="pinyinapp"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:networkSecurityConfig="@xml/network_security_config">
         <activity
             android:name=".MainActivity"
             android:exported="true"

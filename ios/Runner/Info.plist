@@ -47,6 +47,19 @@
 			</array>
 		</dict>
 	</dict>
+	<!-- O endpoint de áudio do Youdao é HTTP puro. Exceção concedida apenas a
+	     esse domínio; o restante do tráfego continua sob ATS. -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>dict.youdao.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
