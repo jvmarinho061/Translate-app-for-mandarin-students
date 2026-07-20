@@ -10,25 +10,19 @@ class WordEntryMapper {
   WordEntry toEntity(WordEntryDto dto) => WordEntry(
         id: dto.id,
         simplified: dto.simplified,
-        traditional:
-            dto.traditional == dto.simplified ? null : dto.traditional,
         pinyin: Pinyin(
-          marked: dto.pinyinMarked ?? dto.pinyinNumbered,
+          marked: dto.pinyinMarked,
           numbered: dto.pinyinNumbered,
-          toneless: dto.pinyinToneless ?? _stripTones(dto.pinyinNumbered),
+          toneless: dto.pinyinToneless,
         ),
+        // O CC-CEDICT é chinês-inglês; marcar o idioma impede que a UI
+        // apresente conteúdo EN como se fosse PT.
         definitions: dto.definitions
-            .map(
-              (text) => Definition(text: text, language: Language.english),
-            )
+            .map((text) => Definition(text: text, language: Language.english))
             .toList(growable: false),
         hskLevel: dto.hskLevel,
       );
 
   List<WordEntry> toEntityList(Iterable<WordEntryDto> dtos) =>
       dtos.map(toEntity).toList(growable: false);
-
-  /// Fallback para quando a forma sem tom não veio pré-calculada.
-  String _stripTones(String numbered) =>
-      numbered.replaceAll(RegExp(r'[1-5]'), '').toLowerCase();
 }

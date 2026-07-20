@@ -1,39 +1,44 @@
+import 'package:pinyinapp/features/dictionary/data/datasources/dictionary_schema.dart';
+
 class WordEntryDto {
   const WordEntryDto({
     required this.id,
     required this.simplified,
     required this.pinyinNumbered,
+    required this.pinyinMarked,
+    required this.pinyinToneless,
     required this.definitions,
-    this.traditional,
-    this.pinyinMarked,
-    this.pinyinToneless,
     this.hskLevel,
   });
 
   final String id;
   final String simplified;
-  final String? traditional;
 
+  /// Forma nativa do CC-CEDICT: `ni3 hao3`.
   final String pinyinNumbered;
 
-  final String? pinyinMarked;
-  final String? pinyinToneless;
+  /// Formas derivadas, pré-calculadas em build-time.
+  final String pinyinMarked;
+  final String pinyinToneless;
 
   final List<String> definitions;
   final int? hskLevel;
 
   factory WordEntryDto.fromMap(Map<String, Object?> map) => WordEntryDto(
-        id: map['id']!.toString(),
-        simplified: map['simplified']! as String,
-        traditional: map['traditional'] as String?,
-        pinyinNumbered: map['pinyin_numbered']! as String,
-        pinyinMarked: map['pinyin_marked'] as String?,
-        pinyinToneless: map['pinyin_toneless'] as String?,
-        definitions: (map['definitions'] as String? ?? '')
-            .split('/')
-            .map((d) => d.trim())
-            .where((d) => d.isNotEmpty)
-            .toList(growable: false),
-        hskLevel: map['hsk_level'] as int?,
+        id: map[DictionarySchema.id]!.toString(),
+        simplified: map[DictionarySchema.simplified]! as String,
+        pinyinNumbered: map[DictionarySchema.pinyinNumbered]! as String,
+        pinyinMarked: map[DictionarySchema.pinyinMarked]! as String,
+        pinyinToneless: map[DictionarySchema.pinyinToneless]! as String,
+        definitions: _splitDefinitions(map[DictionarySchema.definitions]),
+        hskLevel: map[DictionarySchema.hskLevel] as int?,
       );
+
+  // O CC-CEDICT separa acepções por '/'.
+  static List<String> _splitDefinitions(Object? raw) =>
+      (raw as String? ?? '')
+          .split('/')
+          .map((d) => d.trim())
+          .where((d) => d.isNotEmpty)
+          .toList(growable: false);
 }
