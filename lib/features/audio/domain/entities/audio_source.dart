@@ -1,8 +1,4 @@
 import 'package:equatable/equatable.dart';
-
-/// Origem resolvida de um áudio de pronúncia.
-///
-/// O domínio conhece "existe um áudio localizável em tal URI" — e nada sobre
 /// Youdao, query strings ou percent-encoding. Trocar o fornecedor de áudio não
 /// altera esta entidade.
 class AudioSource extends Equatable {
