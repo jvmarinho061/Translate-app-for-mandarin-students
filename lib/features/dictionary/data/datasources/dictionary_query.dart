@@ -15,7 +15,8 @@ abstract final class DictionaryQuery {
   static bool containsHan(String input) => _han.hasMatch(input);
   static String normalizePinyin(String input) {
     final buffer = StringBuffer();
-    for (final char in input.toLowerCase().split('')) {
+    // "u:" é a notação do CC-CEDICT para ü.
+    for (final char in input.toLowerCase().replaceAll('u:', 'v').split('')) {
       buffer.write(_diacritics[char] ?? char);
     }
     return buffer
