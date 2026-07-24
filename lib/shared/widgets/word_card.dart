@@ -3,16 +3,23 @@ import 'package:pinyinapp/app/theme/app_typography.dart';
 import 'package:pinyinapp/features/dictionary/domain/entities/word_entry.dart';
 import 'package:pinyinapp/shared/widgets/pinyin_text.dart';
 
+// A tag inclui o namespace da lista de origem porque o StatefulShellRoute.indexedStack
+// mantém todas as branches montadas ao mesmo tempo: sem o namespace, a mesma palavra
+// em duas abas produz Heroes com tag idêntica e o framework lança exceção.
+String wordHeroTag(String namespace, String id) => 'hanzi-$namespace-$id';
+
 class WordCard extends StatelessWidget {
   const WordCard({
     required this.word,
     required this.onTap,
+    required this.heroNamespace,
     this.trailing,
     super.key,
   });
 
   final WordEntry word;
   final VoidCallback onTap;
+  final String heroNamespace;
   final Widget? trailing;
 
   @override
@@ -22,7 +29,7 @@ class WordCard extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       leading: Hero(
-        tag: 'hanzi-${word.id}',
+        tag: wordHeroTag(heroNamespace, word.id),
         child: Material(
           type: MaterialType.transparency,
           child: Text(

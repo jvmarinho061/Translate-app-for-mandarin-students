@@ -10,15 +10,18 @@ import 'package:pinyinapp/features/translation/domain/entities/language.dart';
 import 'package:pinyinapp/features/translation/presentation/cubit/translation_cubit.dart';
 import 'package:pinyinapp/shared/widgets/failure_view.dart';
 import 'package:pinyinapp/shared/widgets/pinyin_text.dart';
+import 'package:pinyinapp/shared/widgets/word_card.dart';
 
 class WordDetailPage extends StatefulWidget {
   const WordDetailPage({
     required this.wordId,
+    required this.heroNamespace,
     required this.dependencies,
     super.key,
   });
 
   final String wordId;
+  final String heroNamespace;
   final Dependencies dependencies;
 
   @override
@@ -86,7 +89,7 @@ class _WordDetailPageState extends State<WordDetailPage> {
           children: [
             Center(
               child: Hero(
-                tag: 'hanzi-${word.id}',
+                tag: wordHeroTag(widget.heroNamespace, word.id),
                 child: Material(
                   type: MaterialType.transparency,
                   child: Text(

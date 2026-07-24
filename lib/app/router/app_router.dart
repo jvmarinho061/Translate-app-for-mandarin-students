@@ -53,6 +53,7 @@ abstract final class AppRouter {
           path: '/word/:id',
           builder: (context, state) => WordDetailPage(
             wordId: state.pathParameters['id']!,
+            heroNamespace: state.uri.queryParameters['from'] ?? 'search',
             dependencies: dependencies,
           ),
         ),

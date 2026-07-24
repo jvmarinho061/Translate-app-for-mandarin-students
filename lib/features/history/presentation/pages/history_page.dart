@@ -60,7 +60,9 @@ class HistoryPage extends StatelessWidget {
                 final entry = items[index];
                 return WordCard(
                   word: entry.word,
-                  onTap: () => context.push('/word/${entry.word.id}'),
+                  heroNamespace: 'history',
+                  onTap: () =>
+                      context.push('/word/${entry.word.id}?from=history'),
                   trailing: entry.visitCount > 1
                       ? Text('${entry.visitCount}×')
                       : null,

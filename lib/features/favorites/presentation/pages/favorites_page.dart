@@ -44,7 +44,9 @@ class FavoritesPage extends StatelessWidget {
                       context.read<FavoritesCubit>().remove(favorite.word.id),
                   child: WordCard(
                     word: favorite.word,
-                    onTap: () => context.push('/word/${favorite.word.id}'),
+                    heroNamespace: 'fav',
+                    onTap: () =>
+                        context.push('/word/${favorite.word.id}?from=fav'),
                   ),
                 );
               },

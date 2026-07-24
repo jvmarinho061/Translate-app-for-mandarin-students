@@ -54,7 +54,8 @@ class _SearchPageState extends State<SearchPage> {
                 final word = results[index];
                 return WordCard(
                   word: word,
-                  onTap: () => context.push('/word/${word.id}'),
+                  heroNamespace: 'search',
+                  onTap: () => context.push('/word/${word.id}?from=search'),
                 );
               },
             ),
@@ -105,7 +106,8 @@ class _RecentHistory extends StatelessWidget {
             final entry = recent[index - 1];
             return WordCard(
               word: entry.word,
-              onTap: () => context.push('/word/${entry.word.id}'),
+              heroNamespace: 'search',
+              onTap: () => context.push('/word/${entry.word.id}?from=search'),
             );
           },
         );
