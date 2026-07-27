@@ -15,12 +15,19 @@ void main() {
   final requestOptions =
       RequestOptions(path: ApiEndpoints.googleTranslatePath);
 
+  setUpAll(() => registerFallbackValue(Options()));
+
   setUp(() => dio = MockDio());
 
   GoogleTranslationProvider build({
     GoogleTranslateCredentials creds = credentials,
+    GoogleAndroidClient? androidClient,
   }) =>
-      GoogleTranslationProvider(dio: dio, credentials: creds);
+      GoogleTranslationProvider(
+        dio: dio,
+        credentials: creds,
+        androidClient: androidClient,
+      );
 
   Future<Object?> translate(GoogleTranslationProvider provider) =>
       provider.translate(
@@ -35,6 +42,7 @@ void main() {
         any(),
         queryParameters: any(named: 'queryParameters'),
         data: any(named: 'data'),
+        options: any(named: 'options'),
       ),
     ).thenAnswer(
       (_) async => Response<Object?>(
@@ -51,6 +59,7 @@ void main() {
         any(),
         queryParameters: any(named: 'queryParameters'),
         data: any(named: 'data'),
+        options: any(named: 'options'),
       ),
     ).thenThrow(
       DioException(
@@ -132,5 +141,64 @@ void main() {
     stubPostError();
 
     await expectLater(translate(build()), throwsA(isA<NetworkException>()));
+  });
+
+  Map<String, dynamic> capturedHeaders() {
+    final options = verify(
+      () => dio.post<Object?>(
+        any(),
+        queryParameters: any(named: 'queryParameters'),
+        data: any(named: 'data'),
+        options: captureAny(named: 'options'),
+      ),
+    ).captured.single as Options;
+    return options.headers ?? const {};
+  }
+
+  test('no Android, envia a identidade exigida pela restrição da chave',
+      () async {
+    stubPost({
+      'data': {
+        'translations': [
+          {'translatedText': 'Olá'},
+        ],
+      },
+    });
+
+    await translate(
+      build(
+        androidClient: const GoogleAndroidClient(
+          packageName: 'com.joao.pinyinapp',
+          certSha1: '83:72:14:DA',
+        ),
+      ),
+    );
+
+    expect(capturedHeaders()['X-Android-Package'], 'com.joao.pinyinapp');
+  });
+
+  test('sem androidClient, nenhum header de identidade é enviado', () async {
+    stubPost({
+      'data': {
+        'translations': [
+          {'translatedText': 'Olá'},
+        ],
+      },
+    });
+
+    await translate(build());
+
+    final headers = capturedHeaders();
+    expect(headers.containsKey('X-Android-Package'), isFalse);
+    expect(headers.containsKey('X-Android-Cert'), isFalse);
+  });
+
+  test('SHA-1 vira hex maiúsculo sem separadores', () {
+    const client = GoogleAndroidClient(
+      packageName: 'com.joao.pinyinapp',
+      certSha1: '83:72:14:da:37:d6',
+    );
+
+    expect(client.headers['X-Android-Cert'], '837214DA37D6');
   });
 }

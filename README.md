@@ -35,10 +35,24 @@ flutter run --dart-define=GOOGLE_TRANSLATE_API_KEY=xxx
 Without it the app runs and the dictionary works; only the translation on the detail screen shows
 an error.
 
+The VS Code launch config reads the key from the `GOOGLE_TRANSLATE_API_KEY` environment variable
+(`${env:...}`), so it can stay tracked without holding a secret. Set the variable on your machine
+and restart VS Code.
+
 **Security note:** a `--dart-define` key ends up embedded in the binary and can be extracted from
 a distributed APK. Restrict it in the Google Cloud Console: application restriction for Android
 (package name + SHA-1), API restriction to the Cloud Translation API only, and budget/quota alerts.
 Never commit the key.
+
+The Android restriction is validated through the `X-Android-Package` / `X-Android-Cert` headers,
+which the app sends explicitly (Dio does not do it on its own — without them Google rejects the
+request as coming from `<empty>`). The SHA-1 defaults to the debug keystore; a release keystore has
+a different fingerprint, so pass `--dart-define=GOOGLE_ANDROID_CERT_SHA1=...` for release builds.
+Get the current one with:
+
+```sh
+keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android
+```
 
 ## Development
 

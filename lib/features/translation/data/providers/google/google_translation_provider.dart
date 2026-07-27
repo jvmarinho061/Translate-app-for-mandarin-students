@@ -11,6 +11,7 @@ class GoogleTranslationProvider implements TranslationProvider {
   const GoogleTranslationProvider({
     required this.dio,
     required this.credentials,
+    this.androidClient,
     this.codec = const GoogleLanguageCodec(),
     this.errorMapper = const GoogleErrorMapper(),
   });
@@ -19,6 +20,10 @@ class GoogleTranslationProvider implements TranslationProvider {
 
   final Dio dio;
   final GoogleTranslateCredentials credentials;
+
+  /// Só é injetado no Android, onde a restrição de app da chave se aplica;
+  /// `null` nas demais plataformas significa não enviar os headers.
+  final GoogleAndroidClient? androidClient;
   final GoogleLanguageCodec codec;
   final GoogleErrorMapper errorMapper;
 
@@ -62,6 +67,7 @@ class GoogleTranslationProvider implements TranslationProvider {
         ApiEndpoints.googleTranslatePath,
         queryParameters: {'key': credentials.apiKey},
         data: body,
+        options: Options(headers: androidClient?.headers),
       );
       final data = response.data;
       if (data is! Map) {

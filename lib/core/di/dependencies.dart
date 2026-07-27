@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart'
+    show defaultTargetPlatform, kIsWeb, TargetPlatform;
 import 'package:just_audio/just_audio.dart';
 import 'package:pinyinapp/core/config/api_config.dart';
 import 'package:pinyinapp/core/database/hive_boxes.dart';
@@ -56,6 +58,11 @@ class Dependencies {
         provider: GoogleTranslationProvider(
           dio: dio,
           credentials: GoogleTranslateCredentials.fromEnvironment(),
+          // A restrição de app só existe no Android; nas outras plataformas o
+          // header seria ruído.
+          androidClient: !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+              ? GoogleAndroidClient.fromEnvironment()
+              : null,
         ),
         cache: HiveTranslationCacheDataSource(
           HiveBootstrap.box(HiveBoxes.translationCache),
