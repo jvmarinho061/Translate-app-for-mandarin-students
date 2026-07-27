@@ -17,7 +17,7 @@ const _dto = TranslationDto(
   translatedText: 'Olá',
   fromIsoCode: 'zh',
   toIsoCode: 'pt',
-  providerId: 'baidu',
+  providerId: 'google',
 );
 
 void main() {
@@ -38,7 +38,7 @@ void main() {
     final cached = await cache.read(_key);
 
     expect(cached?.dto.translatedText, 'Olá');
-    expect(cached?.dto.providerId, 'baidu');
+    expect(cached?.dto.providerId, 'google');
     await box.close();
   });
 

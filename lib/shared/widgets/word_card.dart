@@ -3,9 +3,6 @@ import 'package:pinyinapp/app/theme/app_typography.dart';
 import 'package:pinyinapp/features/dictionary/domain/entities/word_entry.dart';
 import 'package:pinyinapp/shared/widgets/pinyin_text.dart';
 
-// A tag inclui o namespace da lista de origem porque o StatefulShellRoute.indexedStack
-// mantém todas as branches montadas ao mesmo tempo: sem o namespace, a mesma palavra
-// em duas abas produz Heroes com tag idêntica e o framework lança exceção.
 String wordHeroTag(String namespace, String id) => 'hanzi-$namespace-$id';
 
 class WordCard extends StatelessWidget {

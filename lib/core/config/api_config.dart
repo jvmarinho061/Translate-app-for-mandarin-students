@@ -1,21 +1,21 @@
-class BaiduCredentials {
-  const BaiduCredentials({required this.appId, required this.appKey});
+class GoogleTranslateCredentials {
+  const GoogleTranslateCredentials({required this.apiKey});
 
-  factory BaiduCredentials.fromEnvironment() => const BaiduCredentials(
-        appId: String.fromEnvironment('BAIDU_APP_ID'),
-        appKey: String.fromEnvironment('BAIDU_APP_KEY'),
+  factory GoogleTranslateCredentials.fromEnvironment() =>
+      const GoogleTranslateCredentials(
+        apiKey: String.fromEnvironment('GOOGLE_TRANSLATE_API_KEY'),
       );
 
-  final String appId;
-  final String appKey;
+  final String apiKey;
 
-  bool get isConfigured => appId.isNotEmpty && appKey.isNotEmpty;
+  bool get isConfigured => apiKey.isNotEmpty;
 }
 
 
 abstract final class ApiEndpoints {
-  static const String baiduTranslateBaseUrl = 'https://fanyi-api.baidu.com';
-  static const String baiduTranslatePath = '/api/trans/vip/translate';
+  static const String googleTranslateBaseUrl =
+      'https://translation.googleapis.com';
+  static const String googleTranslatePath = '/language/translate/v2';
   static const String youdaoAudioHost = 'dict.youdao.com';
   static const String youdaoAudioPath = '/dictvoice';
 }

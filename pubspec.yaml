@@ -10,7 +10,6 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   dio: ^5.10.0
-  crypto: ^3.0.7
   equatable: ^2.1.0
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4

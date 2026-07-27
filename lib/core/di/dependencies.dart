@@ -18,7 +18,7 @@ import 'package:pinyinapp/features/history/data/datasources/history_local_data_s
 import 'package:pinyinapp/features/history/data/repositories/history_repository_impl.dart';
 import 'package:pinyinapp/features/history/domain/repositories/history_repository.dart';
 import 'package:pinyinapp/features/translation/data/datasources/hive_translation_cache_data_source.dart';
-import 'package:pinyinapp/features/translation/data/providers/baidu/baidu_translation_provider.dart';
+import 'package:pinyinapp/features/translation/data/providers/google/google_translation_provider.dart';
 import 'package:pinyinapp/features/translation/data/repositories/translation_repository_impl.dart';
 import 'package:pinyinapp/features/translation/domain/repositories/translation_repository.dart';
 
@@ -40,7 +40,7 @@ class Dependencies {
   static Dependencies build() {
     final dio = Dio(
       BaseOptions(
-        baseUrl: ApiEndpoints.baiduTranslateBaseUrl,
+        baseUrl: ApiEndpoints.googleTranslateBaseUrl,
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 15),
       ),
@@ -53,9 +53,9 @@ class Dependencies {
         ),
       ),
       translation: TranslationRepositoryImpl(
-        provider: BaiduTranslationProvider(
+        provider: GoogleTranslationProvider(
           dio: dio,
-          credentials: BaiduCredentials.fromEnvironment(),
+          credentials: GoogleTranslateCredentials.fromEnvironment(),
         ),
         cache: HiveTranslationCacheDataSource(
           HiveBootstrap.box(HiveBoxes.translationCache),

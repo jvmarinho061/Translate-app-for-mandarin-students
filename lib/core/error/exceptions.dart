@@ -13,7 +13,8 @@ final class NetworkException extends AppException {
   const NetworkException(super.message, {super.cause});
 }
 
-/// Importante: a Baidu sinaliza erro **com HTTP 200 e `error_code` no corpo**,
+/// Erro sinalizado pelo fornecedor remoto que não se encaixa nas categorias
+/// específicas (auth, cota, contrato); [code] preserva o código original.
 final class RemoteApiException extends AppException {
   const RemoteApiException(super.message, {this.code, super.cause});
 

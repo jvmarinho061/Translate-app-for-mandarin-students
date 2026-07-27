@@ -41,7 +41,7 @@ class _Attribution extends StatelessWidget {
           SizedBox(height: 8),
           Text('Áudio de pronúncia: Youdao Dictionary.'),
           SizedBox(height: 8),
-          Text('Traduções: Baidu Translate.'),
+          Text('Traduções: Google Cloud Translation.'),
         ],
       ),
     );
