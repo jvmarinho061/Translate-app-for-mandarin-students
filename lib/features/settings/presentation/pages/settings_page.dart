@@ -43,8 +43,6 @@ class _ThemeSelector extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: SegmentedButton<AppThemeMode>(
-                // Rótulos ocultos no modo estreito seriam ambíguos, então os
-                // ícones acompanham o texto em todas as larguras.
                 segments: const [
                   ButtonSegment(
                     value: AppThemeMode.system,
