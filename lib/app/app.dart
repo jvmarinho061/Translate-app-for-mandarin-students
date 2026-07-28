@@ -7,6 +7,8 @@ import 'package:pinyinapp/core/di/dependencies.dart';
 import 'package:pinyinapp/features/dictionary/presentation/cubit/search_cubit.dart';
 import 'package:pinyinapp/features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:pinyinapp/features/history/presentation/cubit/history_cubit.dart';
+import 'package:pinyinapp/features/settings/domain/entities/app_theme_mode.dart';
+import 'package:pinyinapp/features/settings/presentation/cubit/theme_cubit.dart';
 
 class PinyinApp extends StatefulWidget {
   const PinyinApp({required this.dependencies, super.key});
@@ -33,14 +35,19 @@ class _PinyinAppState extends State<PinyinApp> {
         BlocProvider(
           create: (_) => HistoryCubit(widget.dependencies.history),
         ),
+        BlocProvider(
+          create: (_) => ThemeCubit(widget.dependencies.settings),
+        ),
       ],
-      child: MaterialApp.router(
-        title: 'pinyinapp',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.light(),
-        darkTheme: AppTheme.dark(),
-        themeMode: ThemeMode.system,
-        routerConfig: _router,
+      child: BlocBuilder<ThemeCubit, AppThemeMode>(
+        builder: (context, mode) => MaterialApp.router(
+          title: 'pinyinapp',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light(),
+          darkTheme: AppTheme.dark(),
+          themeMode: mode.toFlutter(),
+          routerConfig: _router,
+        ),
       ),
     );
   }

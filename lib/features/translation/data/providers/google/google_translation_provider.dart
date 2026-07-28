@@ -20,9 +20,6 @@ class GoogleTranslationProvider implements TranslationProvider {
 
   final Dio dio;
   final GoogleTranslateCredentials credentials;
-
-  /// Só é injetado no Android, onde a restrição de app da chave se aplica;
-  /// `null` nas demais plataformas significa não enviar os headers.
   final GoogleAndroidClient? androidClient;
   final GoogleLanguageCodec codec;
   final GoogleErrorMapper errorMapper;

@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:pinyinapp/app/theme/tone_colors.dart';
+import 'package:pinyinapp/features/settings/domain/entities/app_theme_mode.dart';
+
+/// Fronteira onde o vocabulário de domínio vira tipo de framework.
+extension AppThemeModeX on AppThemeMode {
+  ThemeMode toFlutter() => switch (this) {
+        AppThemeMode.system => ThemeMode.system,
+        AppThemeMode.light => ThemeMode.light,
+        AppThemeMode.dark => ThemeMode.dark,
+      };
+}
 
 abstract final class AppTheme {
   static const Color _seed = Color(0xFFB3261E);

@@ -19,6 +19,9 @@ import 'package:pinyinapp/features/favorites/domain/repositories/favorites_repos
 import 'package:pinyinapp/features/history/data/datasources/history_local_data_source.dart';
 import 'package:pinyinapp/features/history/data/repositories/history_repository_impl.dart';
 import 'package:pinyinapp/features/history/domain/repositories/history_repository.dart';
+import 'package:pinyinapp/features/settings/data/datasources/settings_local_data_source.dart';
+import 'package:pinyinapp/features/settings/data/repositories/settings_repository_impl.dart';
+import 'package:pinyinapp/features/settings/domain/repositories/settings_repository.dart';
 import 'package:pinyinapp/features/translation/data/datasources/hive_translation_cache_data_source.dart';
 import 'package:pinyinapp/features/translation/data/providers/google/google_translation_provider.dart';
 import 'package:pinyinapp/features/translation/data/repositories/translation_repository_impl.dart';
@@ -31,6 +34,7 @@ class Dependencies {
     required this.audio,
     required this.favorites,
     required this.history,
+    required this.settings,
   });
 
   final DictionaryRepository dictionary;
@@ -38,6 +42,7 @@ class Dependencies {
   final AudioRepository audio;
   final FavoritesRepository favorites;
   final HistoryRepository history;
+  final SettingsRepository settings;
 
   static Dependencies build() {
     final dio = Dio(
@@ -80,6 +85,11 @@ class Dependencies {
       history: HistoryRepositoryImpl(
         dataSource: HiveHistoryLocalDataSource(
           HiveBootstrap.box(HiveBoxes.history),
+        ),
+      ),
+      settings: SettingsRepositoryImpl(
+        dataSource: HiveSettingsLocalDataSource(
+          HiveBootstrap.box(HiveBoxes.settings),
         ),
       ),
     );
