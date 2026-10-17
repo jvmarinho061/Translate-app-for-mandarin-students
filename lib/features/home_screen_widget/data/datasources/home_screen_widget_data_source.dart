@@ -7,6 +7,10 @@ abstract interface class HomeScreenWidgetDataSource {
 
   Future<bool> hasInstalledWidget();
 
+  Future<bool> canRequestPin();
+
+  Future<void> requestPin();
+
   Future<String?> launchedWordId();
 
   Stream<String> watchTappedWordIds();

@@ -19,12 +19,14 @@ class HomeScreenWidgetRepositoryImpl implements HomeScreenWidgetRepository {
         simplified: word.simplified,
         pinyin: word.pinyin.marked,
       );
-      final installed = await dataSource.hasInstalledWidget();
-      return Success(
-        installed
-            ? HomeScreenWidgetPresence.onHomeScreen
-            : HomeScreenWidgetPresence.notAdded,
-      );
+      if (await dataSource.hasInstalledWidget()) {
+        return const Success(HomeScreenWidgetPresence.onHomeScreen);
+      }
+      if (await dataSource.canRequestPin()) {
+        await dataSource.requestPin();
+        return const Success(HomeScreenWidgetPresence.pinRequested);
+      }
+      return const Success(HomeScreenWidgetPresence.notAdded);
     } on HomeScreenWidgetException catch (error) {
       return FailureResult(HomeScreenWidgetFailure(debugMessage: error.toString()));
     } on Object catch (error) {

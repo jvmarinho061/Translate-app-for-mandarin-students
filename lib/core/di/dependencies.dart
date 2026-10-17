@@ -48,7 +48,7 @@ class Dependencies {
   final HistoryRepository history;
   final SettingsRepository settings;
 
-  /// `null` fora do iOS: por enquanto só existe a Widget Extension do iOS.
+  /// `null` fora do iOS e do Android, as plataformas com widget nativo.
   final HomeScreenWidgetRepository? homeScreenWidget;
 
   static Dependencies build() {
@@ -99,7 +99,9 @@ class Dependencies {
           HiveBootstrap.box(HiveBoxes.settings),
         ),
       ),
-      homeScreenWidget: !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS
+      homeScreenWidget: !kIsWeb &&
+              (defaultTargetPlatform == TargetPlatform.iOS ||
+                  defaultTargetPlatform == TargetPlatform.android)
           ? HomeScreenWidgetRepositoryImpl(
               dataSource: HomeWidgetPluginDataSource(),
             )

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout do PinyinWidgetProvider. O id @android:id/background na raiz é o que
+     o launcher (API 31+) usa na animação de abrir o app a partir do widget. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <!-- autoSize encolhe chengyu de 4 caracteres para caber no 2×2. -->
+    <TextView
+        android:id="@+id/widget_hanzi"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:autoSizeMaxTextSize="72sp"
+        android:autoSizeMinTextSize="16sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/widget_text_primary"
+        android:textSize="48sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/widget_pinyin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/widget_text_secondary"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/widget_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/pinyin_widget_empty"
+        android:textColor="@color/widget_text_secondary"
+        android:textSize="14sp" />
+</LinearLayout>
