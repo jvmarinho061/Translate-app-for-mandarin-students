@@ -6,6 +6,7 @@ import 'package:pinyinapp/core/result/result.dart';
 import 'package:pinyinapp/features/audio/presentation/cubit/audio_cubit.dart';
 import 'package:pinyinapp/features/dictionary/domain/entities/word_entry.dart';
 import 'package:pinyinapp/features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:pinyinapp/features/home_screen_widget/presentation/widgets/home_screen_widget_button.dart';
 import 'package:pinyinapp/features/translation/domain/entities/language.dart';
 import 'package:pinyinapp/features/translation/presentation/cubit/translation_cubit.dart';
 import 'package:pinyinapp/shared/widgets/failure_view.dart';
@@ -83,7 +84,13 @@ class _WordDetailPageState extends State<WordDetailPage> {
         ),
       ],
       child: Scaffold(
-        appBar: AppBar(actions: [_FavoriteButton(word: word)]),
+        appBar: AppBar(
+          actions: [
+            if (widget.dependencies.homeScreenWidget case final repository?)
+              HomeScreenWidgetButton(repository: repository, word: word),
+            _FavoriteButton(word: word),
+          ],
+        ),
         body: ListView(
           padding: const EdgeInsets.all(24),
           children: [

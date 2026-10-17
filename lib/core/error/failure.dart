@@ -53,6 +53,10 @@ final class AudioFailure extends Failure {
   const AudioFailure({super.debugMessage});
 }
 
+final class HomeScreenWidgetFailure extends Failure {
+  const HomeScreenWidgetFailure({super.debugMessage});
+}
+
 /// Entrada inválida detectada antes de gastar rede ou disco.
 final class ValidationFailure extends Failure {
   const ValidationFailure({this.reason, super.debugMessage});

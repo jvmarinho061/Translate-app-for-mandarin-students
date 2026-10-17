@@ -44,3 +44,7 @@ final class DatabaseException extends AppException {
 final class AudioPlaybackException extends AppException {
   const AudioPlaybackException(super.message, {super.cause});
 }
+
+final class HomeScreenWidgetException extends AppException {
+  const HomeScreenWidgetException(super.message, {super.cause});
+}
