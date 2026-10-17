@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Cores do widget, tiradas do ColorScheme.fromSeed(0xFFB3261E) de
+     lib/app/theme/app_theme.dart (surfaceContainer, onSurface, onSurfaceVariant). -->
+<resources>
+    <color name="widget_background">#FCEAE7</color>
+    <color name="widget_text_primary">#231918</color>
+    <color name="widget_text_secondary">#534341</color>
+</resources>

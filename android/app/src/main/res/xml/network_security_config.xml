@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- O endpoint de áudio do Youdao é HTTP puro. Exceção concedida apenas a esse
+     domínio; o restante do tráfego continua exigindo HTTPS. Equivale à exceção
+     de ATS em ios/Runner/Info.plist. -->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">dict.youdao.com</domain>
+    </domain-config>
+</network-security-config>

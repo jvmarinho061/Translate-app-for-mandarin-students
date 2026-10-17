@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pinyin_widget_label">Hanzi</string>
+    <string name="pinyin_widget_description">Mostra o hanzi escolhido no pinyinapp.</string>
+    <string name="pinyin_widget_empty">Escolha um hanzi no app</string>
+</resources>

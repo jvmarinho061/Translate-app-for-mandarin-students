@@ -26,11 +26,30 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <!-- Quem trata a URL do widget (pinyinapp://word/<id>?homeWidget) é o
+                 home_widget. Com o deep linking do Flutter ligado, o go_router
+                 também a receberia e cairia em /<id>. -->
+            <meta-data
+              android:name="flutter_deeplinking_enabled"
+              android:value="false"
+              />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!-- Widget da tela inicial com o hanzi escolhido no app. -->
+        <receiver
+            android:name=".PinyinWidgetProvider"
+            android:exported="false"
+            android:label="@string/pinyin_widget_label">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/pinyin_widget_info"/>
+        </receiver>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
