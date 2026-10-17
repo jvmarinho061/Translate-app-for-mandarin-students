@@ -19,6 +19,9 @@ import 'package:pinyinapp/features/favorites/domain/repositories/favorites_repos
 import 'package:pinyinapp/features/history/data/datasources/history_local_data_source.dart';
 import 'package:pinyinapp/features/history/data/repositories/history_repository_impl.dart';
 import 'package:pinyinapp/features/history/domain/repositories/history_repository.dart';
+import 'package:pinyinapp/features/home_screen_widget/data/datasources/home_widget_plugin_data_source.dart';
+import 'package:pinyinapp/features/home_screen_widget/data/repositories/home_screen_widget_repository_impl.dart';
+import 'package:pinyinapp/features/home_screen_widget/domain/repositories/home_screen_widget_repository.dart';
 import 'package:pinyinapp/features/settings/data/datasources/settings_local_data_source.dart';
 import 'package:pinyinapp/features/settings/data/repositories/settings_repository_impl.dart';
 import 'package:pinyinapp/features/settings/domain/repositories/settings_repository.dart';
@@ -35,6 +38,7 @@ class Dependencies {
     required this.favorites,
     required this.history,
     required this.settings,
+    required this.homeScreenWidget,
   });
 
   final DictionaryRepository dictionary;
@@ -43,6 +47,9 @@ class Dependencies {
   final FavoritesRepository favorites;
   final HistoryRepository history;
   final SettingsRepository settings;
+
+  /// `null` fora do iOS: por enquanto só existe a Widget Extension do iOS.
+  final HomeScreenWidgetRepository? homeScreenWidget;
 
   static Dependencies build() {
     final dio = Dio(
@@ -92,6 +99,11 @@ class Dependencies {
           HiveBootstrap.box(HiveBoxes.settings),
         ),
       ),
+      homeScreenWidget: !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS
+          ? HomeScreenWidgetRepositoryImpl(
+              dataSource: HomeWidgetPluginDataSource(),
+            )
+          : null,
     );
   }
 }

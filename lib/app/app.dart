@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -21,6 +23,27 @@ class PinyinApp extends StatefulWidget {
 
 class _PinyinAppState extends State<PinyinApp> {
   late final GoRouter _router = AppRouter.build(widget.dependencies);
+  StreamSubscription<String>? _widgetTaps;
+
+  @override
+  void initState() {
+    super.initState();
+    _widgetTaps = widget.dependencies.homeScreenWidget
+        ?.watchTappedWordIds()
+        .listen(_openTappedWord);
+  }
+
+  void _openTappedWord(String wordId) {
+    WidgetsBinding.instance
+      ..addPostFrameCallback((_) => _router.push('/word/$wordId?from=widget'))
+      ..ensureVisualUpdate();
+  }
+
+  @override
+  void dispose() {
+    _widgetTaps?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
