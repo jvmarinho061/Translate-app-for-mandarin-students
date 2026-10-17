@@ -59,14 +59,52 @@ void main() {
       expect(result.valueOrNull, HomeScreenWidgetPresence.onHomeScreen);
     });
 
-    test('devolve notAdded quando nenhum widget foi adicionado', () async {
+    test('sem widget e com fixação suportada, pede a fixação', () async {
       stubSave();
       when(() => dataSource.hasInstalledWidget())
           .thenAnswer((_) async => false);
+      when(() => dataSource.canRequestPin()).thenAnswer((_) async => true);
+      when(() => dataSource.requestPin()).thenAnswer((_) async {});
+
+      final result = await repository.show(word);
+
+      expect(result.valueOrNull, HomeScreenWidgetPresence.pinRequested);
+      verify(() => dataSource.requestPin()).called(1);
+    });
+
+    test('sem widget e sem fixação suportada, devolve notAdded', () async {
+      stubSave();
+      when(() => dataSource.hasInstalledWidget())
+          .thenAnswer((_) async => false);
+      when(() => dataSource.canRequestPin()).thenAnswer((_) async => false);
 
       final result = await repository.show(word);
 
       expect(result.valueOrNull, HomeScreenWidgetPresence.notAdded);
+      verifyNever(() => dataSource.requestPin());
+    });
+
+    test('com widget já instalado, não pede fixação', () async {
+      stubSave();
+      when(() => dataSource.hasInstalledWidget()).thenAnswer((_) async => true);
+
+      await repository.show(word);
+
+      verifyNever(() => dataSource.canRequestPin());
+      verifyNever(() => dataSource.requestPin());
+    });
+
+    test('falha ao pedir a fixação vira HomeScreenWidgetFailure', () async {
+      stubSave();
+      when(() => dataSource.hasInstalledWidget())
+          .thenAnswer((_) async => false);
+      when(() => dataSource.canRequestPin()).thenAnswer((_) async => true);
+      when(() => dataSource.requestPin())
+          .thenThrow(const HomeScreenWidgetException('launcher recusou'));
+
+      final result = await repository.show(word);
+
+      expect(result.failureOrNull, isA<HomeScreenWidgetFailure>());
     });
 
     test('converte HomeScreenWidgetException em HomeScreenWidgetFailure',

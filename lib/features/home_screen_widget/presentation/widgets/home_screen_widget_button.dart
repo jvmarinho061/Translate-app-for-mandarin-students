@@ -26,6 +26,9 @@ class HomeScreenWidgetButton extends StatelessWidget {
         messenger.showSnackBar(
           SnackBar(content: Text('Widget atualizado: ${word.simplified}')),
         );
+      case Success(value: HomeScreenWidgetPresence.pinRequested):
+        // O diálogo de fixar do próprio launcher já é o retorno ao usuário.
+        break;
       case Success(value: HomeScreenWidgetPresence.notAdded):
         await showModalBottomSheet<void>(
           context: context,
@@ -54,15 +57,24 @@ class _AddWidgetInstructions extends StatelessWidget {
 
   final WordEntry word;
 
-  static const _steps = [
+  static const _iOSSteps = [
     'Na tela inicial, toque e segure um espaço vazio até os ícones tremerem.',
     'Toque no botão do canto superior esquerdo (Editar ou +) › Adicionar Widget.',
     'Procure por Pinyinapp, escolha o tamanho e toque em Adicionar Widget.',
   ];
 
+  static const _androidSteps = [
+    'Na tela inicial, toque e segure um espaço vazio.',
+    'Toque em Widgets.',
+    'Procure por pinyinapp, segure o widget Hanzi e arraste para a tela.',
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final isIOS = theme.platform == TargetPlatform.iOS;
+    final steps = isIOS ? _iOSSteps : _androidSteps;
 
     return SafeArea(
       child: Padding(
@@ -84,13 +96,17 @@ class _AddWidgetInstructions extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              'O widget já vai mostrar esta palavra. O iOS só deixa você '
-              'mesmo colocá-lo na tela inicial, e isso só precisa ser feito '
-              'uma vez:',
+              isIOS
+                  ? 'O widget já vai mostrar esta palavra. O iOS só deixa você '
+                      'mesmo colocá-lo na tela inicial, e isso só precisa ser '
+                      'feito uma vez:'
+                  : 'O widget já vai mostrar esta palavra. Seu launcher não '
+                      'permite adicioná-lo pelo app, mas isso só precisa ser '
+                      'feito uma vez:',
               style: textTheme.bodyMedium,
             ),
             const SizedBox(height: 12),
-            for (final (index, step) in _steps.indexed)
+            for (final (index, step) in steps.indexed)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text('${index + 1}. $step'),
