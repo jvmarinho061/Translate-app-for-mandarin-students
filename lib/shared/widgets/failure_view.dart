@@ -12,6 +12,7 @@ abstract final class FailureMessageMapper {
         NotFoundFailure() => 'Termo não encontrado.',
         DatabaseFailure() => 'Falha ao acessar os dados locais.',
         AudioFailure() => 'Não foi possível reproduzir a pronúncia.',
+        HomeScreenWidgetFailure() => 'Não foi possível atualizar o widget.',
         ValidationFailure(:final reason) => reason ?? 'Entrada inválida.',
         UnsupportedPlatformFailure() =>
           'Recurso indisponível nesta plataforma.',
